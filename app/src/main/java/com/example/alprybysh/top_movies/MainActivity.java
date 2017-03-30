@@ -2,6 +2,7 @@ package com.example.alprybysh.top_movies;
 
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -12,6 +13,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.alprybysh.top_movies.utilities.NetworkUtils;
@@ -26,78 +28,74 @@ import java.util.ArrayList;
 public class MainActivity extends AppCompatActivity implements MoviesAdapter.MoviesOnClickListenerHandler {
 
     private MoviesAdapter adapter;
-    private Toast mToast;
     private static final String BASE_URL_POPULAR = "http://api.themoviedb.org/3/movie/popular";
     private static final String BASE_URL_RATED = "http://api.themoviedb.org/3/movie/top_rated";
 
     private RecyclerView mRecyclerView;
 
-
     private ArrayList<String> mMoviesData;
     private ArrayList<String> mPostersPath;
-    private  ArrayList<String> mOverview;
-    private  ArrayList<String> mReleaseDate;
-    private  ArrayList<String>mRating;
+    private ArrayList<String> mOverview;
+    private ArrayList<String> mReleaseDate;
+    private ArrayList<String> mRating;
 
     private ProgressBar mLoadingIndicator;
-
-
-
-
-    private Movie mMovie;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         setContentView(R.layout.activity_main);
 
+          /*
+         * Using findViewById, we get a reference to our RecyclerView from xml. This allows us to
+         * do things like set the adapter of the RecyclerView and toggle the visibility.
+         */
         mRecyclerView = (RecyclerView) findViewById(R.id.display_list_of_movies);
-        int numberOfColumns = 3;
 
-        GridLayoutManager layoutManager = new GridLayoutManager(this, numberOfColumns);
 
+        /*Setting the GridLayoutManager as a manager for the RecyclerView*/
+        GridLayoutManager layoutManager = new GridLayoutManager(this, 3);
         mRecyclerView.setLayoutManager(layoutManager);
 
         adapter = new MoviesAdapter(this);
 
+        /* Setting the adapter attaches it to the RecyclerView in our layout. */
         mRecyclerView.setAdapter(adapter);
 
+        /*
+         * The ProgressBar that will indicate to the user that we are loading data. It will be
+         * hidden when no data is loading.*/
         mLoadingIndicator = (ProgressBar) findViewById(R.id.pb_loading_indicator);
 
-        loadMoviesData(BASE_URL_POPULAR);
 
+        /* Once all of our views are setup, we can load the weather data. */
+        loadMoviesData(BASE_URL_POPULAR);
 
     }
 
+    /*This method run the background task*/
     public void loadMoviesData(String urlData) {
 
         new FetchMoviesData().execute(urlData);
 
-
     }
-
+    /**
+     * This method is overridden by our MainActivity class in order to handle RecyclerView item
+     * clicks.
+     *
+     * @param movieClicked The movie that was clicked
+     */
     @Override
-    public void onItemClick(String s) {
+    public void onItemClick(String movieClicked) {
 
         Context context = this;
         Class destinationClass = DetailActivity.class;
         Intent intent = new Intent(context, destinationClass);
-        intent.putExtra(Intent.EXTRA_TEXT, s);
+        intent.putExtra(Intent.EXTRA_TEXT, movieClicked);
         startActivity(intent);
-
-
-//        if (mToast != null) {
-//            mToast.cancel();
-//        }
-//
-//        String toastMessage = s + " clicked.";
-//        mToast = Toast.makeText(this, toastMessage, Toast.LENGTH_LONG);
-//
-//        mToast.show();
-
     }
+
 
     public class FetchMoviesData extends AsyncTask<String, Void, String> {
 
@@ -106,15 +104,15 @@ public class MainActivity extends AppCompatActivity implements MoviesAdapter.Mov
             super.onPreExecute();
             mLoadingIndicator.setVisibility(View.VISIBLE);
         }
-
+        /* Fetch movie's data*/
         @Override
         protected String doInBackground(String... params) {
             if (params.length == 0) {
                 return null;
             }
-
             String moviesData = params[0];
             URL moviesRequestUrl = NetworkUtils.buildUrl(moviesData);
+
             try {
 
                 String jsonMoviesResponse = NetworkUtils.getResponceFromHttpUrl(moviesRequestUrl);
@@ -127,7 +125,6 @@ public class MainActivity extends AppCompatActivity implements MoviesAdapter.Mov
                 mOverview = ParseJsonUtil.getOverView();
                 mReleaseDate = ParseJsonUtil.getReleaseDate();
 
-
                 return jsonMoviesResponse;
             } catch (Exception e) {
                 e.printStackTrace();
@@ -135,59 +132,51 @@ public class MainActivity extends AppCompatActivity implements MoviesAdapter.Mov
             }
 
         }
-
+        /*Setting moive's data into adapter*/
         @Override
         protected void onPostExecute(String s) {
             mLoadingIndicator.setVisibility(View.INVISIBLE);
             adapter.setPostersPath(mPostersPath);
-            adapter.setMoviesData(mMoviesData);
+            adapter.setTitles(mMoviesData);
             adapter.setRating(mRating);
             adapter.setReleaseDate(mReleaseDate);
             adapter.setmOverview(mOverview);
             super.onPostExecute(s);
         }
     }
-
+    /*This method is used for creating the setting menu*/
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
 
         MenuInflater inflater = getMenuInflater();
-
         inflater.inflate(R.menu.sort, menu);
         return true;
     }
 
+    /*This method is used for setting the data according a user's choise*/
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
 
         int id = item.getItemId();
 
         if (id == R.id.show_the_most_popular) {
-
-            adapter.setMoviesData(null);
+            adapter.setTitles(null);
             adapter.setPostersPath(null);
             adapter.setRating(null);
             adapter.setReleaseDate(null);
             adapter.setmOverview(null);
             loadMoviesData(BASE_URL_POPULAR);
-
         }
 
         if (id == R.id.show_the_most_rated) {
-
-            adapter.setMoviesData(null);
+            adapter.setTitles(null);
             adapter.setPostersPath(null);
             adapter.setRating(null);
             adapter.setReleaseDate(null);
             adapter.setmOverview(null);
             loadMoviesData(BASE_URL_RATED);
-
         }
         return super.onOptionsItemSelected(item);
     }
-
-
-
-
 
 }

@@ -7,7 +7,8 @@
     <ImageView
         android:id="@+id/display_poster"
         android:layout_width="130dp"
-        android:layout_height="130dp"/>
+        android:layout_height="130dp"
+        android:layout_gravity="center_horizontal"/>
 
 
     <TextView
@@ -16,7 +17,8 @@
         android:layout_height="wrap_content"
         android:textSize="16sp"
         android:padding="16dp"
-        android:textStyle="bold|italic"/>
+        android:textStyle="bold|italic"
+        android:layout_gravity="center_horizontal"/>
 
 
 

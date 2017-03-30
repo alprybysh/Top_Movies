@@ -1,7 +1,7 @@
 package com.example.alprybysh.top_movies.utilities;
 
 import android.net.Uri;
-
+import android.util.Log;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
@@ -16,27 +16,43 @@ import java.util.Scanner;
 public class NetworkUtils {
 
 
+    /**
+     * Builds the URL used to talk to the  server
+     * @param url_popular The endpoint that will be queried for.
+     * @return The URL to use to query the server.
+     */
 
-    private  static String key = "?api_key=109de7a407dc592e0bd0e399255c5a37";
 
-    public static URL buildUrl (String url_popular){
-        Uri builtUri = Uri.parse(url_popular+key)
+    private static String key = "?api_key=109de7a407dc592e0bd0e399255c5a37";
+
+    public static URL buildUrl(String url_popular) {
+        Uri builtUri = Uri.parse(url_popular + key)
                 .buildUpon()
                 .build();
+
+        Log.v("Key", builtUri.toString());
 
         URL url = null;
 
         try {
-            url =new URL(builtUri.toString());
-        }catch (MalformedURLException e){
+            url = new URL(builtUri.toString());
+        } catch (MalformedURLException e) {
             e.printStackTrace();
         }
         return url;
     }
 
-    public static String getResponceFromHttpUrl (URL url) throws IOException {
+    /**
+     * Builds the URL used to talk to the server
+     *
+     * @param url The url
+
+     * @return The Url to use to query the server.
+     */
+
+    public static String getResponceFromHttpUrl(URL url) throws IOException {
         HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
-        try{
+        try {
             InputStream in = urlConnection.getInputStream();
 
             Scanner scanner = new Scanner(in);
@@ -44,12 +60,12 @@ public class NetworkUtils {
 
             boolean hasInput = scanner.hasNext();
 
-            if(hasInput){
+            if (hasInput) {
                 return scanner.next();
-            }else {
+            } else {
                 return null;
             }
-        }finally {
+        } finally {
             urlConnection.disconnect();
         }
     }

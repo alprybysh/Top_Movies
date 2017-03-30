@@ -1,5 +1,8 @@
 package com.example.alprybysh.top_movies;
 
+import android.net.Uri;
+
+import java.net.URL;
 import java.util.ArrayList;
 
 /**
