@@ -23,7 +23,7 @@ public class NetworkUtils {
      */
 
 
-    private static String key = "?api_key=109de7a407dc592e0bd0e399255c5a37";
+    private static String key = "?api_key=";
 
     public static URL buildUrl(String url_popular) {
         Uri builtUri = Uri.parse(url_popular + key)
