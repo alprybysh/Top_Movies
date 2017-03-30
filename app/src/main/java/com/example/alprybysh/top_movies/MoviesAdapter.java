@@ -9,7 +9,13 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import com.example.alprybysh.top_movies.utilities.ParseJsonUtil;
 import com.squareup.picasso.Picasso;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.ArrayList;
 
 /**
  * Created by aprybysh on 3/27/17.
@@ -18,19 +24,23 @@ import com.squareup.picasso.Picasso;
 public class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.MoviesViewHolder> {
 
 
-    private String[] mData;
-    private String[] mPostersPath;
+    private ArrayList<String> mData;
+    private ArrayList<String> mPostersPath;
+    private ArrayList<String> mRating;
+    private  ArrayList<String> mOverview;
+    private  ArrayList<String> mReleaseDate;
 
+    Movie mMovie;
 
     private final MoviesOnClickListenerHandler mClickHnadler;
 
 
     public interface MoviesOnClickListenerHandler {
-        void onItemClick(String s);
+        void onItemClick(String itemClicked);
     }
 
 
-    public MoviesAdapter( MoviesOnClickListenerHandler clickListenerHandler) {
+    public MoviesAdapter(MoviesOnClickListenerHandler clickListenerHandler) {
 
         mClickHnadler = clickListenerHandler;
     }
@@ -41,7 +51,6 @@ public class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.MoviesView
         public ImageView mPoster;
 
 
-
         public MoviesViewHolder(View itemView) {
             super(itemView);
             mPoster = (ImageView) itemView.findViewById(R.id.display_poster);
@@ -50,14 +59,21 @@ public class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.MoviesView
         }
 
 
-
-
-
-
         @Override
         public void onClick(View view) {
+            mMovie = new Movie();
+
             int adapterPosition = getAdapterPosition();
-            String itemClicked = mData[adapterPosition];
+            String itemClicked = mData.get(adapterPosition);
+            String itemClicked1 = mPostersPath.get(adapterPosition);
+            String itemClicked2 = mRating.get(adapterPosition);
+            String itemClicked3 = mOverview.get(adapterPosition);
+            String itemClicked4 = mReleaseDate.get(adapterPosition);
+            mMovie.setmTitle(itemClicked);
+            mMovie.setmPath(itemClicked1);
+            mMovie.setmRating(itemClicked2);
+            mMovie.setmOverview(itemClicked3);
+            mMovie.setmReleaseDate(itemClicked4);
             mClickHnadler.onItemClick(itemClicked);
 
         }
@@ -77,30 +93,47 @@ public class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.MoviesView
 
     @Override
     public void onBindViewHolder(MoviesViewHolder moviesViewHolder, int position) {
-        Context context = moviesViewHolder.mPoster.getContext();
+      //  Context context = moviesViewHolder.mPoster.getContext();
 
-        String moviesToDisplay = mData[position];
-        String posterToDisplay = mPostersPath[position];
-        Picasso.with(context).load(posterToDisplay).into(moviesViewHolder.mPoster);
+        String moviesToDisplay = mData.get(position);
+        String posterToDisplay = mPostersPath.get(position);
+        Picasso.with(moviesViewHolder.mPoster.getContext()).load(posterToDisplay).into(moviesViewHolder.mPoster);
         moviesViewHolder.mTextView.setText(moviesToDisplay);
     }
-
 
 
     @Override
     public int getItemCount() {
         if (mData == null) return 0;
-        return mData.length;
+        return mData.size();
 
     }
 
-    public  void setMoviesData (String[] moviesData){
-        mData =moviesData;
+    public void setMoviesData (ArrayList<String> data) {
+
+            mData = data;
+            notifyDataSetChanged();
+
+    }
+
+    public void setPostersPath(ArrayList<String> data) {
+
+            mPostersPath = data;
+            notifyDataSetChanged();
+
+    }
+
+    public void setRating (ArrayList<String> data){
+        mRating = data;
+        notifyDataSetChanged();
+    }
+    public void setReleaseDate (ArrayList<String> data){
+        mReleaseDate = data;
         notifyDataSetChanged();
     }
 
-    public void setPostersPath (String[] postersPath){
-        mPostersPath = postersPath;
+    public void setmOverview(ArrayList<String> data){
+        mOverview = data;
         notifyDataSetChanged();
     }
 

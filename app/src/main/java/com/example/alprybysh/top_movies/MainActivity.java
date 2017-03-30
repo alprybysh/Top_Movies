@@ -1,5 +1,7 @@
 package com.example.alprybysh.top_movies;
 
+import android.content.Context;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -15,24 +17,34 @@ import android.widget.Toast;
 import com.example.alprybysh.top_movies.utilities.NetworkUtils;
 import com.example.alprybysh.top_movies.utilities.ParseJsonUtil;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.net.URL;
+import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity implements MoviesAdapter.MoviesOnClickListenerHandler {
 
     private MoviesAdapter adapter;
-
     private Toast mToast;
-
     private static final String BASE_URL_POPULAR = "http://api.themoviedb.org/3/movie/popular";
     private static final String BASE_URL_RATED = "http://api.themoviedb.org/3/movie/top_rated";
 
     private RecyclerView mRecyclerView;
 
-    private String[] mMoviesData;
 
-    private String[] mPostersPath;
+    private ArrayList<String> mMoviesData;
+    private ArrayList<String> mPostersPath;
+    private  ArrayList<String> mOverview;
+    private  ArrayList<String> mReleaseDate;
+    private  ArrayList<String>mRating;
 
     private ProgressBar mLoadingIndicator;
+
+
+
+
+    private Movie mMovie;
 
 
     @Override
@@ -68,14 +80,22 @@ public class MainActivity extends AppCompatActivity implements MoviesAdapter.Mov
 
     @Override
     public void onItemClick(String s) {
-        if (mToast != null) {
-            mToast.cancel();
-        }
 
-        String toastMessage = s + " clicked.";
-        mToast = Toast.makeText(this, toastMessage, Toast.LENGTH_LONG);
+        Context context = this;
+        Class destinationClass = DetailActivity.class;
+        Intent intent = new Intent(context, destinationClass);
+        intent.putExtra(Intent.EXTRA_TEXT, s);
+        startActivity(intent);
 
-        mToast.show();
+
+//        if (mToast != null) {
+//            mToast.cancel();
+//        }
+//
+//        String toastMessage = s + " clicked.";
+//        mToast = Toast.makeText(this, toastMessage, Toast.LENGTH_LONG);
+//
+//        mToast.show();
 
     }
 
@@ -99,8 +119,14 @@ public class MainActivity extends AppCompatActivity implements MoviesAdapter.Mov
 
                 String jsonMoviesResponse = NetworkUtils.getResponceFromHttpUrl(moviesRequestUrl);
 
-                mMoviesData = ParseJsonUtil.fetchMoviesData(jsonMoviesResponse);
-                mPostersPath = ParseJsonUtil.fetchPosterPath();
+                ParseJsonUtil.fetchMoviesData(jsonMoviesResponse);
+
+                mMoviesData = ParseJsonUtil.getTitles();
+                mPostersPath = ParseJsonUtil.getPosterPath();
+                mRating = ParseJsonUtil.getRating();
+                mOverview = ParseJsonUtil.getOverView();
+                mReleaseDate = ParseJsonUtil.getReleaseDate();
+
 
                 return jsonMoviesResponse;
             } catch (Exception e) {
@@ -115,6 +141,9 @@ public class MainActivity extends AppCompatActivity implements MoviesAdapter.Mov
             mLoadingIndicator.setVisibility(View.INVISIBLE);
             adapter.setPostersPath(mPostersPath);
             adapter.setMoviesData(mMoviesData);
+            adapter.setRating(mRating);
+            adapter.setReleaseDate(mReleaseDate);
+            adapter.setmOverview(mOverview);
             super.onPostExecute(s);
         }
     }
@@ -134,18 +163,31 @@ public class MainActivity extends AppCompatActivity implements MoviesAdapter.Mov
         int id = item.getItemId();
 
         if (id == R.id.show_the_most_popular) {
+
             adapter.setMoviesData(null);
             adapter.setPostersPath(null);
+            adapter.setRating(null);
+            adapter.setReleaseDate(null);
+            adapter.setmOverview(null);
             loadMoviesData(BASE_URL_POPULAR);
 
         }
 
         if (id == R.id.show_the_most_rated) {
+
             adapter.setMoviesData(null);
             adapter.setPostersPath(null);
+            adapter.setRating(null);
+            adapter.setReleaseDate(null);
+            adapter.setmOverview(null);
             loadMoviesData(BASE_URL_RATED);
 
         }
         return super.onOptionsItemSelected(item);
     }
+
+
+
+
+
 }
