@@ -48,7 +48,11 @@ public class DetailActivity extends AppCompatActivity {
 
                 mTitle = intentStarted.getStringExtra(Intent.EXTRA_TEXT);
                 mTitleView.setText(mTitle);
-                Picasso.with(mPoster.getContext()).load(Movie.getmPath()).into(mPoster);
+                Picasso.with(mPoster.getContext())
+                        .load(Movie.getmPath())
+                        .placeholder(R.drawable.download)
+                        .error(R.drawable.download)
+                        .into(mPoster);
                 mOverviewView.setText(Movie.getmOverview());
                 mRatingView.setText(Movie.getmRating());
                 mReleaseDateView.setText(Movie.getmReleaseDate());
