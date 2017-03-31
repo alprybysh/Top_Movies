@@ -17,6 +17,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.alprybysh.top_movies.utilities.FetchMoviesData;
 import com.example.alprybysh.top_movies.utilities.NetworkUtils;
 import com.example.alprybysh.top_movies.utilities.ParseJsonUtil;
 
@@ -31,16 +32,12 @@ public class MainActivity extends AppCompatActivity implements MoviesAdapter.Mov
     private MoviesAdapter adapter;
     private static final String BASE_URL_POPULAR = "http://api.themoviedb.org/3/movie/popular";
     private static final String BASE_URL_RATED = "http://api.themoviedb.org/3/movie/top_rated";
+    private FetchMoviesData fetchMoviesData;
 
     private RecyclerView mRecyclerView;
 
-    private ArrayList<String> mMoviesData;
-    private ArrayList<String> mPostersPath;
-    private ArrayList<String> mOverview;
-    private ArrayList<String> mReleaseDate;
-    private ArrayList<String> mRating;
-
     private ProgressBar mLoadingIndicator;
+
 
     private int numberOfColumns() {
         DisplayMetrics displayMetrics = new DisplayMetrics();
@@ -69,7 +66,6 @@ public class MainActivity extends AppCompatActivity implements MoviesAdapter.Mov
         /*Setting the GridLayoutManager as a manager for the RecyclerView*/
 
 
-
         GridLayoutManager layoutManager = new GridLayoutManager(this, numberOfColumns());
 
 
@@ -94,9 +90,10 @@ public class MainActivity extends AppCompatActivity implements MoviesAdapter.Mov
     /*This method run the background task*/
     public void loadMoviesData(String urlData) {
 
-        new FetchMoviesData().execute(urlData);
+        new FetchMoviesData(mLoadingIndicator, adapter).execute(urlData);
 
     }
+
     /**
      * This method is overridden by our MainActivity class in order to handle RecyclerView item
      * clicks.
@@ -113,54 +110,6 @@ public class MainActivity extends AppCompatActivity implements MoviesAdapter.Mov
         startActivity(intent);
     }
 
-
-    public class FetchMoviesData extends AsyncTask<String, Void, String> {
-
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-            mLoadingIndicator.setVisibility(View.VISIBLE);
-        }
-        /* Fetch movie's data*/
-        @Override
-        protected String doInBackground(String... params) {
-            if (params.length == 0) {
-                return null;
-            }
-            String moviesData = params[0];
-            URL moviesRequestUrl = NetworkUtils.buildUrl(moviesData);
-
-            try {
-
-                String jsonMoviesResponse = NetworkUtils.getResponceFromHttpUrl(moviesRequestUrl);
-
-                ParseJsonUtil.fetchMoviesData(jsonMoviesResponse);
-
-                mMoviesData = ParseJsonUtil.getTitles();
-                mPostersPath = ParseJsonUtil.getPosterPath();
-                mRating = ParseJsonUtil.getRating();
-                mOverview = ParseJsonUtil.getOverView();
-                mReleaseDate = ParseJsonUtil.getReleaseDate();
-
-                return jsonMoviesResponse;
-            } catch (Exception e) {
-                e.printStackTrace();
-                return null;
-            }
-
-        }
-        /*Setting moive's data into adapter*/
-        @Override
-        protected void onPostExecute(String s) {
-            mLoadingIndicator.setVisibility(View.INVISIBLE);
-            adapter.setPostersPath(mPostersPath);
-            adapter.setTitles(mMoviesData);
-            adapter.setRating(mRating);
-            adapter.setReleaseDate(mReleaseDate);
-            adapter.setmOverview(mOverview);
-            super.onPostExecute(s);
-        }
-    }
     /*This method is used for creating the setting menu*/
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
