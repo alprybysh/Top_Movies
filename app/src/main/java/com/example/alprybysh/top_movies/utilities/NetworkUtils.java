@@ -1,6 +1,8 @@
 package com.example.alprybysh.top_movies.utilities;
 
 import android.net.Uri;
+import android.os.Build;
+import android.support.compat.BuildConfig;
 import android.util.Log;
 import java.io.IOException;
 import java.io.InputStream;
@@ -23,10 +25,10 @@ public class NetworkUtils {
      */
 
 
-    private static String key = "?api_key=";
+    private static final String KEY = com.example.alprybysh.top_movies.BuildConfig.API_KEY;
 
     public static URL buildUrl(String url_popular) {
-        Uri builtUri = Uri.parse(url_popular + key)
+        Uri builtUri = Uri.parse(url_popular + KEY)
                 .buildUpon()
                 .build();
 

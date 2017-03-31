@@ -8,6 +8,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.DisplayMetrics;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -41,6 +42,17 @@ public class MainActivity extends AppCompatActivity implements MoviesAdapter.Mov
 
     private ProgressBar mLoadingIndicator;
 
+    private int numberOfColumns() {
+        DisplayMetrics displayMetrics = new DisplayMetrics();
+        getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
+        // You can change this divider to adjust the size of the poster
+        int widthDivider = 400;
+        int width = displayMetrics.widthPixels;
+        int nColumns = width / widthDivider;
+        if (nColumns < 2) return 2;
+        return nColumns;
+    }
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,7 +67,12 @@ public class MainActivity extends AppCompatActivity implements MoviesAdapter.Mov
 
 
         /*Setting the GridLayoutManager as a manager for the RecyclerView*/
-        GridLayoutManager layoutManager = new GridLayoutManager(this, 3);
+
+
+
+        GridLayoutManager layoutManager = new GridLayoutManager(this, numberOfColumns());
+
+
         mRecyclerView.setLayoutManager(layoutManager);
 
         adapter = new MoviesAdapter(this);

@@ -133,7 +133,11 @@ public class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.MoviesView
 
         String moviesToDisplay = mData.get(position);
         String posterToDisplay = mPostersPath.get(position);
-        Picasso.with(moviesViewHolder.mPoster.getContext()).load(posterToDisplay).into(moviesViewHolder.mPoster);
+        Picasso.with(moviesViewHolder.mPoster.getContext())
+                .load(posterToDisplay)
+                .placeholder(R.drawable.download)
+                .error(R.drawable.download)
+                .into(moviesViewHolder.mPoster);
         moviesViewHolder.mTextView.setText(moviesToDisplay);
     }
 

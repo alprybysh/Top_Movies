@@ -6,21 +6,33 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.widget.ImageView;
 import android.widget.TextView;
+
 import com.squareup.picasso.Picasso;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
 
 
 public class DetailActivity extends AppCompatActivity {
 
     private String mTitle;
-    private TextView mTitleView;
-    private ImageView mPoster;
-    private TextView mOverviewView;
     private String usersRAting = "Users rating:  ";
-    private TextView mRatingView;
     private String ReleaseDate = "Release date:";
-    private TextView mReleaseDateView;
-    private TextView mRelease;
-    private TextView mUser;
+
+    @BindView(R.id.users)
+    TextView mUser;
+    @BindView(R.id.release)
+    TextView mRelease;
+    @BindView(R.id.users_rating)
+    TextView mRatingView;
+    @BindView(R.id.release_date)
+    TextView mReleaseDateView;
+    @BindView(R.id.overview)
+    TextView mOverviewView;
+    @BindView(R.id.details_poster)
+    ImageView mPoster;
+    @BindView(R.id.title_details)
+    TextView mTitleView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,14 +41,7 @@ public class DetailActivity extends AppCompatActivity {
 
         Intent intentStarted = getIntent();
 
-        mTitleView = (TextView) findViewById(R.id.title_details);
-        mPoster = (ImageView) findViewById(R.id.details_poster);
-        mOverviewView = (TextView) findViewById(R.id.overview);
-        mReleaseDateView = (TextView) findViewById(R.id.release_date);
-        mRatingView = (TextView) findViewById(R.id.users_rating);
-        mRelease = (TextView) findViewById(R.id.release);
-        mUser = (TextView) findViewById(R.id.users);
-
+        ButterKnife.bind(this);
 
         if (intentStarted != null) {
             if (intentStarted.hasExtra(Intent.EXTRA_TEXT)) {

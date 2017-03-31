@@ -14,9 +14,9 @@
             android:id="@+id/title_details"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:padding="16dp"
-            android:textColor="#000000"
-            android:textSize="24sp"
+            android:padding="@dimen/padding_medium"
+            android:textColor="@color/colorOfText"
+            android:textSize="@dimen/text_size_large"
             android:textStyle="bold"
             android:layout_gravity="center_horizontal"/>
 
@@ -24,16 +24,16 @@
             android:id="@+id/details_poster"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:padding="16dp"
+            android:padding="@dimen/padding_medium"
             android:layout_gravity="center_horizontal"/>
 
         <TextView
             android:id="@+id/overview"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:padding="16dp"
-            android:textSize="16sp"
-            android:textColor="#000000"
+            android:padding="@dimen/padding_medium"
+            android:textSize="@dimen/text_size_medium"
+            android:textColor="@color/colorOfText"
 
             />
     <LinearLayout
@@ -45,21 +45,21 @@
             android:id="@+id/users"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:paddingRight="8dp"
-            android:paddingBottom="8dp"
-            android:paddingLeft="16dp"
-            android:paddingTop="8dp"
-            android:textSize="16sp"
-            android:textColor="#000000"
+            android:paddingRight="@dimen/padding_small"
+            android:paddingBottom="@dimen/padding_small"
+            android:paddingLeft="@dimen/padding_medium"
+            android:paddingTop="@dimen/padding_small"
+            android:textSize="@dimen/text_size_medium"
+            android:textColor="@color/colorOfText"
             />
 
         <TextView
             android:id="@+id/users_rating"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:padding="8dp"
-            android:textSize="16sp"
-            android:textColor="#000000"
+            android:padding="@dimen/padding_small"
+            android:textSize="@dimen/text_size_medium"
+            android:textColor="@color/colorOfText"
             />
 
 
@@ -76,12 +76,12 @@
                 android:id="@+id/release"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="16sp"
-                android:textColor="#000000"
-                android:paddingRight="8dp"
-                android:paddingBottom="8dp"
-                android:paddingLeft="16dp"
-                android:paddingTop="8dp"
+                android:textSize="@dimen/text_size_medium"
+                android:textColor="@color/colorOfText"
+                android:paddingRight="@dimen/padding_small"
+                android:paddingBottom="@dimen/padding_small"
+                android:paddingLeft="@dimen/padding_medium"
+                android:paddingTop="@dimen/padding_small"
 
                 />
 
@@ -89,9 +89,9 @@
                 android:id="@+id/release_date"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:padding="8dp"
-                android:textSize="16sp"
-                android:textColor="#000000"
+                android:padding="@dimen/padding_medium"
+                android:textSize="@dimen/text_size_medium"
+                android:textColor="@color/colorOfText"
 
                 />
         </LinearLayout>
