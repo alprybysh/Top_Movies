@@ -3,14 +3,10 @@ package com.example.alprybysh.top_movies.utilities;
 import android.os.AsyncTask;
 import android.view.View;
 import android.widget.ProgressBar;
-
 import com.example.alprybysh.top_movies.MoviesAdapter;
-import com.example.alprybysh.top_movies.R;
-
 import java.net.URL;
 import java.util.ArrayList;
 
-import butterknife.BindView;
 
 /**
  * Created by aprybysh on 3/31/17.
