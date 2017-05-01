@@ -1,9 +1,18 @@
 package com.example.alprybysh.top_movies.utilities;
 
+import android.content.Context;
 import android.os.AsyncTask;
+import android.os.Bundle;
+import android.support.v4.app.LoaderManager;
+import android.support.v4.content.AsyncTaskLoader;
+import android.support.v4.content.Loader;
+import android.util.Log;
 import android.view.View;
 import android.widget.ProgressBar;
+
+import com.example.alprybysh.top_movies.Movie;
 import com.example.alprybysh.top_movies.MoviesAdapter;
+
 import java.net.URL;
 import java.util.ArrayList;
 
@@ -12,24 +21,29 @@ import java.util.ArrayList;
  * Created by aprybysh on 3/31/17.
  */
 
-public class FetchMoviesData extends AsyncTask<String, Void, String> {
+public class FetchMoviesData extends AsyncTask<String, Void, ArrayList<Movie>> {
 
-
-    private ArrayList<String> mMoviesData;
-    private ArrayList<String> mPostersPath;
-    private ArrayList<String> mOverview;
-    private ArrayList<String> mReleaseDate;
-    private ArrayList<String> mRating;
     private MoviesAdapter adapter;
     private ProgressBar mLoadingIndicator;
+    private ArrayList<Movie> mMovies;
+    private ParseJsonUtil mParseJsonUtil;
+    private String mUrl;
+    Context mContext;
 
-    public FetchMoviesData(ProgressBar progressBar, MoviesAdapter mAdapter) {
+     Movie movie;
+
+
+    public FetchMoviesData(ProgressBar progressBar, MoviesAdapter mAdapter, Context context) {
 
         adapter = mAdapter;
         mLoadingIndicator = progressBar;
+        mContext = context;
+
+        Log.v("Size", "I'm here");
+
+
+
     }
-
-
     @Override
     protected void onPreExecute() {
         super.onPreExecute();
@@ -38,42 +52,36 @@ public class FetchMoviesData extends AsyncTask<String, Void, String> {
 
     /* Fetch movie's data*/
     @Override
-    protected String doInBackground(String... params) {
+    protected ArrayList<Movie> doInBackground(String... params) {
         if (params.length == 0) {
             return null;
         }
+
+        mMovies =new ArrayList<>();
         String moviesData = params[0];
+
         URL moviesRequestUrl = NetworkUtils.buildUrl(moviesData);
 
         try {
 
+            mParseJsonUtil = new ParseJsonUtil();
             String jsonMoviesResponse = NetworkUtils.getResponceFromHttpUrl(moviesRequestUrl);
+            mParseJsonUtil.fetchMoviesData(jsonMoviesResponse);
+            mMovies = mParseJsonUtil.movies();
 
-            ParseJsonUtil.fetchMoviesData(jsonMoviesResponse);
-
-            mMoviesData = ParseJsonUtil.getTitles();
-            mPostersPath = ParseJsonUtil.getPosterPath();
-            mRating = ParseJsonUtil.getRating();
-            mOverview = ParseJsonUtil.getOverView();
-            mReleaseDate = ParseJsonUtil.getReleaseDate();
-
-            return jsonMoviesResponse;
+          //  return mMovies;
         } catch (Exception e) {
             e.printStackTrace();
             return null;
         }
-
+     return mMovies;
     }
 
     /*Setting moive's data into adapter*/
     @Override
-    protected void onPostExecute(String s) {
+    protected void onPostExecute(ArrayList<Movie> movies) {
         mLoadingIndicator.setVisibility(View.INVISIBLE);
-        adapter.setPostersPath(mPostersPath);
-        adapter.setTitles(mMoviesData);
-        adapter.setRating(mRating);
-        adapter.setReleaseDate(mReleaseDate);
-        adapter.setmOverview(mOverview);
-        super.onPostExecute(s);
+        adapter.setMoviesData(movies);
+        super.onPostExecute(movies);
     }
 }

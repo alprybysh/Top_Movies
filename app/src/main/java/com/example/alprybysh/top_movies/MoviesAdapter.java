@@ -1,8 +1,11 @@
 package com.example.alprybysh.top_movies;
 
 import android.content.Context;
+import android.database.Cursor;
 import android.net.Uri;
+import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,6 +13,8 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import com.example.alprybysh.top_movies.data.MoviesContract;
+import com.example.alprybysh.top_movies.data.SetMoviesDatabase;
 import com.example.alprybysh.top_movies.utilities.ParseJsonUtil;
 import com.squareup.picasso.Picasso;
 
@@ -26,33 +31,37 @@ import java.util.ArrayList;
 public class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.MoviesViewHolder> {
 
 
-    private ArrayList<String> mData;
-    private ArrayList<String> mPostersPath;
-    private ArrayList<String> mRating;
-    private ArrayList<String> mOverview;
-    private ArrayList<String> mReleaseDate;
+    private final Context mContext;
+
+    public ArrayList <Movie> movies;
 
     Movie mMovie;
 
     private final MoviesOnClickListenerHandler mClickHnadler;
 
+
+    private Cursor mCursor;
+
     /**
      * The interface that receives onClick messages.
      */
+
     public interface MoviesOnClickListenerHandler {
-        void onItemClick(String itemClicked);
+        void onItemClick(Movie itemClicked);
     }
 
     /**
      * Creates a MoviesAdapter.
      *
      * @param clickListenerHandler The on-click handler for this adapter. This single handler is called
-     *                     when an item is clicked.
+     *                             when an item is clicked.
      */
-    public MoviesAdapter(MoviesOnClickListenerHandler clickListenerHandler) {
+    public MoviesAdapter(@NonNull Context context, MoviesOnClickListenerHandler clickListenerHandler) {
 
         mClickHnadler = clickListenerHandler;
+        mContext = context;
     }
+
     /**
      * Cache of the children views for a forecast list item.
      */
@@ -71,28 +80,23 @@ public class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.MoviesView
         public MoviesViewHolder(View itemView) {
             super(itemView);
             mPoster = (ImageView) itemView.findViewById(R.id.display_poster);
-            mTextView = (TextView) itemView.findViewById(R.id.display_information);
+         //   mTextView = (TextView) itemView.findViewById(R.id.display_information);
             itemView.setOnClickListener(this);
         }
-
 
 
         @Override
         public void onClick(View view) {
             mMovie = new Movie();
+            mMovie = movies.get( getAdapterPosition());
+            mMovie.setmTitle(mMovie.getmTitle());
+            mMovie.setmPath(mMovie.getmPath());
+            mMovie.setmRating(mMovie.getmRating());
+            mMovie.setmOverview(mMovie.getmOverview());
+            mMovie.setmReleaseDate(mMovie.getmReleaseDate());
+            mMovie.setmID(mMovie.getmID());
 
-            int adapterPosition = getAdapterPosition();
-            String itemClicked = mData.get(adapterPosition);
-            String itemClicked1 = mPostersPath.get(adapterPosition);
-            String itemClicked2 = mRating.get(adapterPosition);
-            String itemClicked3 = mOverview.get(adapterPosition);
-            String itemClicked4 = mReleaseDate.get(adapterPosition);
-            mMovie.setmTitle(itemClicked);
-            mMovie.setmPath(itemClicked1);
-            mMovie.setmRating(itemClicked2);
-            mMovie.setmOverview(itemClicked3);
-            mMovie.setmReleaseDate(itemClicked4);
-            mClickHnadler.onItemClick(itemClicked);
+            mClickHnadler.onItemClick(mMovie);
 
         }
     }
@@ -101,23 +105,26 @@ public class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.MoviesView
      * This gets called when each new ViewHolder is created. This happens when the RecyclerView
      * is laid out. Enough ViewHolders will be created to fill the screen and allow for scrolling.
      *
-     * @param parent The ViewGroup that these ViewHolders are contained within.
-     * @param viewType  If your RecyclerView has more than one type of item (which ours doesn't) you
-     *                  can use this viewType integer to provide a different layout. See
-     *                  {@link android.support.v7.widget.RecyclerView.Adapter#getItemViewType(int)}
-     *                  for more details.
+     * @param parent   The ViewGroup that these ViewHolders are contained within.
+     * @param viewType If your RecyclerView has more than one type of item (which ours doesn't) you
+     *                 can use this viewType integer to provide a different layout. See
+     *                 {@link android.support.v7.widget.RecyclerView.Adapter#getItemViewType(int)}
+     *                 for more details.
      * @return A new MoviesAdapterViewHolder that holds the View for each list item
      */
     @Override
     public MoviesViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
 
-        Context context = parent.getContext();
-        int layoutIdForListIte = R.layout.items_layout;
-        LayoutInflater inflater = LayoutInflater.from(context);
-        boolean shouldAttachToParentImmediately = false;
-        View view = inflater.inflate(layoutIdForListIte, parent, shouldAttachToParentImmediately);
+        View view = LayoutInflater
+                .from(mContext)
+                .inflate(R.layout.items_layout, parent, false);
+
+        view.setFocusable(true);
+
         return new MoviesViewHolder(view);
+
     }
+
     /**
      * OnBindViewHolder is called by the RecyclerView to display the data at the specified
      * position. In this method, we update the contents of the ViewHolder to display the weather
@@ -125,66 +132,69 @@ public class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.MoviesView
      * passed into us.
      *
      * @param moviesViewHolder The ViewHolder which should be updated to represent the
-     *                                  contents of the item at the given position in the data set.
-     * @param position                  The position of the item within the adapter's data set.
+     *                         contents of the item at the given position in the data set.
+     * @param position         The position of the item within the adapter's data set.
      */
     @Override
     public void onBindViewHolder(MoviesViewHolder moviesViewHolder, int position) {
-
-        String moviesToDisplay = mData.get(position);
-        String posterToDisplay = mPostersPath.get(position);
+        mMovie = new Movie();
+        mMovie = movies.get(position);
+        String posterToDisplay = mMovie.getmPath();
         Picasso.with(moviesViewHolder.mPoster.getContext())
                 .load(posterToDisplay)
                 .placeholder(R.drawable.download)
                 .error(R.drawable.download)
                 .into(moviesViewHolder.mPoster);
-        moviesViewHolder.mTextView.setText(moviesToDisplay);
+
     }
 
     /**
      * This method simply returns the number of items to display.
-     *
      */
     @Override
     public int getItemCount() {
-        if (mData == null) return 0;
-        return mData.size();
 
-    }
-    /**
-     * These methods are used to set the movie data on a adapter if we've already
-     * created one. This is handy when we get new data from the web but don't want to create a
-     * new ForecastAdapter to display it.
-     *
-     * @param data The new movie data to be displayed.
-     */
-    public void setTitles (ArrayList<String> data) {
-
-        mData = data;
-        notifyDataSetChanged();
-    }
-
-    public void setPostersPath(ArrayList<String> data) {
-
-        mPostersPath = data;
-        notifyDataSetChanged();
+        if (movies == null) {
+            return 0;
+        }
+        return movies.size();
 
     }
 
-    public void setRating(ArrayList<String> data) {
-        mRating = data;
+    public void setMoviesData (ArrayList<Movie> movies){
+
+        this.movies = movies;
         notifyDataSetChanged();
     }
 
-    public void setReleaseDate(ArrayList<String> data) {
-        mReleaseDate = data;
-        notifyDataSetChanged();
-    }
 
-    public void setmOverview(ArrayList<String> data) {
-        mOverview = data;
+//    void swapCursor(Cursor newCursor) {
+//        mCursor = newCursor;
+//        notifyDataSetChanged();
+//    }
+
+
+    public void convertCursor(Cursor cursor) {
+
+        movies = new ArrayList();
+
+
+        for (int i = 0; i < cursor.getCount(); i++) {
+            mMovie = new Movie();
+            cursor.moveToPosition(i);
+            mMovie.setmTitle(cursor.getString(cursor.getColumnIndex(MoviesContract.MoviesEntry.COLUMN_TITLE)));
+            mMovie.setmID(cursor.getInt(cursor.getColumnIndex(MoviesContract.MoviesEntry.COLUMN_IDENTIFIER)));
+            mMovie.setmPath(cursor.getString(cursor.getColumnIndex(MoviesContract.MoviesEntry.COLUMN_POSTER)));
+            mMovie.setmOverview(cursor.getString(cursor.getColumnIndex(MoviesContract.MoviesEntry.COLUMN_OVERVIEW)));
+            mMovie.setmRating(cursor.getString(cursor.getColumnIndex(MoviesContract.MoviesEntry.COLUMN_USER_RATING)));
+            mMovie.setmReleaseDate(cursor.getString(cursor.getColumnIndex(MoviesContract.MoviesEntry.COLUMN_RELEASE_DATE)));
+            movies.add(mMovie);
+
+        }
         notifyDataSetChanged();
+
     }
 
 
 }
+

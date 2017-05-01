@@ -25,7 +25,31 @@ public class NetworkUtils {
      */
 
 
+
     private static final String KEY = com.example.alprybysh.top_movies.BuildConfig.API_KEY;
+
+    private static final String BASE_URL = "https://www.youtube.com/watch?v=";
+
+
+    public static String buildUrlReviews(String mBaseUrl, String end, int mMovieId) {
+
+        StringBuilder builder = new StringBuilder();
+        builder.append(mBaseUrl);
+        builder.append(Integer.toString(mMovieId));
+        builder.append(end);
+        return builder.toString();
+    }
+
+
+    public static Uri buildTrailerUri(String path){
+
+        Uri builtUri = Uri.parse(BASE_URL + path)
+                .buildUpon()
+                .build();
+
+
+        return builtUri;
+    }
 
     public static URL buildUrl(String url_popular) {
         Uri builtUri = Uri.parse(url_popular + KEY)

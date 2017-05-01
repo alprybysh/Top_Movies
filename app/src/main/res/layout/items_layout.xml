@@ -6,19 +6,20 @@
 
     <ImageView
         android:id="@+id/display_poster"
-        android:layout_width="70dp"
-        android:layout_height="180dp"
-        android:layout_gravity="center_horizontal"/>
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scaleType="fitCenter"
+        android:adjustViewBounds="true"/>
 
 
-    <TextView
-        android:id="@+id/display_information"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textSize="@dimen/text_size_medium"
-        android:padding="@dimen/padding_medium"
-        android:textStyle="bold|italic"
-        android:layout_gravity="center_horizontal"/>
+    <!--<TextView-->
+        <!--android:id="@+id/display_information"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:textSize="@dimen/text_size_medium"-->
+        <!--android:padding="@dimen/padding_medium"-->
+        <!--android:textStyle="bold|italic"-->
+        <!--android:layout_gravity="center_horizontal"/>-->
 
 
 

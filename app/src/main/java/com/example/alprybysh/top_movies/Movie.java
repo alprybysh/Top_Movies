@@ -14,17 +14,28 @@ import java.util.ArrayList;
 public class Movie implements Parcelable{
 
 
-    private static String mTitle;
-    private static String mRating;
-    private static String mPath;
-    private static String mOverview;
-    private static String mReleaseDate;
+    private  String mTitle;
+    private  String mRating;
+    private  String mPath;
+    private  String mOverview;
+    private  String mReleaseDate;
+    private ArrayList<String> mReviews;
+    private ArrayList<String> mAuthor;
+    private ArrayList<String> mTrailers;
+    private ArrayList<String> mNameTrailers;
+    private  int mID;
+
+
+    private ArrayList <Movie> movieArrayList;
+
 
     public Movie() {
 
     }
 
-    public static String getmTitle() {
+
+
+    public  String getmTitle() {
         return mTitle;
     }
 
@@ -32,7 +43,7 @@ public class Movie implements Parcelable{
         this.mTitle = mTitle;
     }
 
-    public static String getmRating() {
+    public  String getmRating() {
         return mRating;
     }
 
@@ -40,7 +51,7 @@ public class Movie implements Parcelable{
         this.mRating = mRating;
     }
 
-    public static String getmPath() {
+    public  String getmPath() {
         return mPath;
     }
 
@@ -48,7 +59,7 @@ public class Movie implements Parcelable{
         this.mPath = mPath;
     }
 
-    public static String getmOverview() {
+    public  String getmOverview() {
         return mOverview;
     }
 
@@ -56,13 +67,67 @@ public class Movie implements Parcelable{
         this.mOverview = mOverview;
     }
 
-    public static String getmReleaseDate() {
+    public  String getmReleaseDate() {
         return mReleaseDate;
     }
 
     public void setmReleaseDate(String mReleaseDate) {
         this.mReleaseDate = mReleaseDate;
     }
+
+
+    public int getmID() {
+        return mID;
+    }
+
+    public void setmID(int mID) {
+        this.mID = mID;
+    }
+
+    public ArrayList<String> getmReviews() {
+        return mReviews;
+    }
+
+    public void setmReviews(ArrayList<String> mReviews) {
+        this.mReviews = mReviews;
+    }
+
+
+    public ArrayList<String> getmAuthor() {
+        return mAuthor;
+    }
+
+    public void setmAuthor(ArrayList<String> mAuthor) {
+        this.mAuthor = mAuthor;
+    }
+
+
+    public ArrayList<String> getmTrailers() {
+        return mTrailers;
+    }
+
+    public void setmTrailers(ArrayList<String> mTrailers) {
+        this.mTrailers = mTrailers;
+    }
+
+
+
+    public ArrayList<String> getmNameTrailers() {
+        return mNameTrailers;
+    }
+
+    public void setmNameTrailers(ArrayList<String> mNameTrailers) {
+        this.mNameTrailers = mNameTrailers;
+    }
+
+    public ArrayList<Movie> getMovieArrayList() {
+        return movieArrayList;
+    }
+
+    public void setMovieArrayList(ArrayList<Movie> movieArrayList) {
+        this.movieArrayList = movieArrayList;
+    }
+
 
 
 
@@ -79,6 +144,13 @@ public class Movie implements Parcelable{
         dest.writeString(mPath);
         dest.writeString(mOverview);
         dest.writeString(mReleaseDate);
+        dest.writeInt(mID);
+        dest.writeSerializable(mReviews);
+        dest.writeSerializable(mAuthor);
+        dest.writeSerializable(mNameTrailers);
+        dest.writeSerializable(mTrailers);
+        dest.writeSerializable(movieArrayList);
+
 
     }
 
@@ -100,5 +172,12 @@ public class Movie implements Parcelable{
         mPath = in.readString();
         mOverview = in.readString();
         mReleaseDate = in.readString();
+        mID = in.readInt();
+        mReviews = (ArrayList<String>) in.readSerializable();
+        mAuthor = (ArrayList<String>) in.readSerializable();
+        mNameTrailers = (ArrayList<String>) in.readSerializable();
+        mTrailers = (ArrayList<String>) in.readSerializable();
+        movieArrayList = (ArrayList<Movie>) in.readSerializable();
+
     }
 }

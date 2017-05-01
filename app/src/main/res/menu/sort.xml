@@ -12,5 +12,10 @@
         android:title="Show the most rated"
         app:showAsAction="never"/>
 
+    <item
+        android:id="@+id/show_my_favorites"
+        android:title="Show my favorites"
+        app:showAsAction="never"/>
+
 
 </menu>
