@@ -2,6 +2,7 @@
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
     android:fillViewport="true"
     android:orientation="vertical">
 
@@ -31,16 +32,43 @@
                 android:padding="@dimen/padding_medium"
                />
 
-            <Button
-                android:id="@+id/edit_favorite"
+
+            <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="BUTTON"
-                android:onClick="onClickAddFavorite"
+                android:orientation="vertical">
 
-                />
+                <TextView
+                    android:id="@+id/release_date"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="@dimen/padding_medium"
+                    android:textSize="@dimen/text_size_medium"
+                    android:textColor="@color/colorOfText"
+                    tools:text="Release date"
 
+                    />
 
+                <TextView
+                    android:id="@+id/users_rating"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="@dimen/padding_small"
+                    android:textSize="@dimen/text_size_medium"
+                    android:textColor="@color/colorOfText"
+                    tools:text="Rating"
+                    />
+
+                <Button
+                    android:id="@+id/edit_favorite"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Make as favorite"
+                    android:onClick="onClickAddFavorite"
+
+                    />
+
+            </LinearLayout>
 
         </LinearLayout>
 
@@ -55,65 +83,6 @@
             android:textColor="@color/colorOfText"
 
             />
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
-
-        <TextView
-            android:id="@+id/users"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:paddingRight="@dimen/padding_small"
-            android:paddingBottom="@dimen/padding_small"
-            android:paddingLeft="@dimen/padding_medium"
-            android:paddingTop="@dimen/padding_small"
-            android:textSize="@dimen/text_size_medium"
-            android:textColor="@color/colorOfText"
-            />
-
-        <TextView
-            android:id="@+id/users_rating"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:padding="@dimen/padding_small"
-            android:textSize="@dimen/text_size_medium"
-            android:textColor="@color/colorOfText"
-            />
-
-
-
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
-
-            <TextView
-                android:id="@+id/release"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textSize="@dimen/text_size_medium"
-                android:textColor="@color/colorOfText"
-                android:paddingRight="@dimen/padding_small"
-                android:paddingBottom="@dimen/padding_small"
-                android:paddingLeft="@dimen/padding_medium"
-                android:paddingTop="@dimen/padding_small"
-
-                />
-
-            <TextView
-                android:id="@+id/release_date"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:padding="@dimen/padding_medium"
-                android:textSize="@dimen/text_size_medium"
-                android:textColor="@color/colorOfText"
-
-                />
-        </LinearLayout>
 
         <LinearLayout
             android:id="@+id/trailers_layout_child"
@@ -131,16 +100,6 @@
             android:orientation="vertical">
 
         </LinearLayout>
-
-
-
-
-        <!--<android.support.v7.widget.RecyclerView-->
-            <!--android:id="@+id/list_of_reviews"-->
-            <!--android:layout_width="wrap_content"-->
-            <!--android:layout_height="fill_parent"-->
-            <!--android:text = "Example"/>-->
-
 
         <ProgressBar
             android:id="@+id/pb_loading_indicator_detail"

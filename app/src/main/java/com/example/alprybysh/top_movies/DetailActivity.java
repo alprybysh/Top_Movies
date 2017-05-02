@@ -3,6 +3,7 @@ package com.example.alprybysh.top_movies;
 
 import android.content.Intent;
 
+import android.database.Cursor;
 import android.graphics.PorterDuff;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.ContextCompat;
@@ -19,6 +20,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 
+import com.example.alprybysh.top_movies.data.MoviesContract;
 import com.example.alprybysh.top_movies.data.SetMoviesDatabase;
 
 import com.example.alprybysh.top_movies.utilities.ReviewsTrailersView;
@@ -33,11 +35,10 @@ public class DetailActivity extends AppCompatActivity
 {
 
 
-    private String usersRAting = "Users rating:  ";
-    private String ReleaseDate = "Release date:";
-    private int mMovieID;
 
-    private ProgressBar mLoadingIndicator;
+    private int mMovieID;
+    private boolean mMovieExist;
+    private Cursor cursor;
 
 
     public static final int LOADER_ID_REVIEWS = 103;
@@ -49,10 +50,6 @@ public class DetailActivity extends AppCompatActivity
 
     private Movie mMovie;
 
-    @BindView(R.id.users)
-    TextView mUser;
-    @BindView(R.id.release)
-    TextView mRelease;
     @BindView(R.id.users_rating)
     TextView mRatingView;
     @BindView(R.id.release_date)
@@ -65,12 +62,15 @@ public class DetailActivity extends AppCompatActivity
     TextView mTitleView;
     @BindView(R.id.edit_favorite)
     Button favorite;
+    @BindView(R.id.pb_loading_indicator_detail)
+    ProgressBar mLoadingIndicator;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.details_of_movie);
+
 
         Intent intentStarted = getIntent();
 
@@ -94,20 +94,19 @@ public class DetailActivity extends AppCompatActivity
                 mOverviewView.setText(mMovie.getmOverview());
                 mRatingView.setText(mMovie.getmRating());
                 mReleaseDateView.setText(mMovie.getmReleaseDate());
-                mRelease.setText(ReleaseDate);
-                mUser.setText(usersRAting);
                 mMovieID = mMovie.getmID();
-                favorite.setBackgroundColor(ContextCompat.getColor(this, R.color.colorDefaultFavorite));
-                mLoadingIndicator = (ProgressBar) findViewById(R.id.pb_loading_indicator_detail);
+                mMovieExist = checkIfMovieExist();
+                if (mMovieExist) {
+                    favorite.setBackgroundColor(ContextCompat.getColor(this, R.color.colorSavedFavorite));
+                } else
+                    favorite.setBackgroundColor(ContextCompat.getColor(this, R.color.colorDefaultFavorite));
 
                 if (mMovie.getmReviews() == null || mMovie.getmNameTrailers() == null) {
 
-                    ReviewsTrailersView reviewsTrailersView = new ReviewsTrailersView(this, mMovieID );
-                    ReviewsTrailersView reviewsTrailersView1 = new ReviewsTrailersView(this, mMovieID );
-
-
+                    ReviewsTrailersView reviewsTrailersView = new ReviewsTrailersView(this, mMovieID);
+                    ReviewsTrailersView reviewsTrailersView1 = new ReviewsTrailersView(this, mMovieID);
                     reviewsTrailersView.execute(LOADER_ID_REVIEWS);
-                   reviewsTrailersView1.execute(LOADER_ID_TRAILERS);
+                    reviewsTrailersView1.execute(LOADER_ID_TRAILERS);
 
                 }
             }
@@ -116,13 +115,42 @@ public class DetailActivity extends AppCompatActivity
 
     public void onClickAddFavorite(View view) {
 
-        setMoviesDatabase = new SetMoviesDatabase(this);
 
-        setMoviesDatabase.setMoviesData(mMovie);
+        if (mMovieExist){
+            int delRow = getContentResolver().delete(MoviesContract.MoviesEntry.CONTENT_URI,
+                    "identifier = " + Integer.toString(mMovieID),
+                    null);
 
-        Toast.makeText(getBaseContext(), "CLICK", Toast.LENGTH_SHORT).show();
+            if (delRow > 0){
+                favorite.setBackgroundColor(ContextCompat.getColor(this, R.color.colorDefaultFavorite));
+            }
 
 
+        }else {
+            setMoviesDatabase = new SetMoviesDatabase(this);
+            favorite.setBackgroundColor(ContextCompat.getColor(this, R.color.colorSavedFavorite));
+            setMoviesDatabase.setMoviesData(mMovie);
+            Toast.makeText(getBaseContext(), "CLICK", Toast.LENGTH_SHORT).show();
+
+        }
+
+
+
+    }
+
+    public boolean checkIfMovieExist() {
+
+        cursor = getContentResolver().query(MoviesContract.MoviesEntry.CONTENT_URI, null,
+                "identifier = " + Integer.toString(mMovieID),
+                null,
+                null);
+        if (cursor != null && cursor.moveToFirst()) {
+            cursor.close();
+            return true;
+        }
+
+        cursor.close();
+        return false;
     }
 
 

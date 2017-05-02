@@ -29,12 +29,9 @@ import java.util.ArrayList;
 
 
 public class MainActivity extends AppCompatActivity implements MoviesAdapter.MoviesOnClickListenerHandler,
-        LoaderManager.LoaderCallbacks<Cursor>
-{
+        LoaderManager.LoaderCallbacks<Cursor> {
 
     private MoviesAdapter adapter;
-
-    private ParseJsonUtil mParseJsonUtil;
     private ArrayList<Movie> movieArrayList;
 
     private static final int MOVIE_LOADER_ID = 77;
@@ -46,8 +43,6 @@ public class MainActivity extends AppCompatActivity implements MoviesAdapter.Mov
     private RecyclerView mRecyclerView;
     private ProgressBar mLoadingIndicator;
     private Movie mMovie;
-
-
 
 
     private int numberOfColumns() {
@@ -91,20 +86,17 @@ public class MainActivity extends AppCompatActivity implements MoviesAdapter.Mov
          * hidden when no data is loading.*/
         mLoadingIndicator = (ProgressBar) findViewById(R.id.pb_loading_indicator);
 
-        if (savedInstanceState != null){
+        if (savedInstanceState != null) {
 
             movieArrayList = new ArrayList<>();
             movieArrayList = savedInstanceState.getParcelableArrayList("Key");
             adapter.setMoviesData(movieArrayList);
         }
 
-        if (savedInstanceState == null){
-            FetchMoviesData fetchMoviesData = new FetchMoviesData(mLoadingIndicator,adapter, this);
+        if (savedInstanceState == null) {
+            FetchMoviesData fetchMoviesData = new FetchMoviesData(mLoadingIndicator, adapter, this);
             fetchMoviesData.execute(BASE_URL_POPULAR);
-
         }
-
-
     }
 
     /**
@@ -141,13 +133,13 @@ public class MainActivity extends AppCompatActivity implements MoviesAdapter.Mov
 
         if (id == R.id.show_the_most_popular) {
 
-            FetchMoviesData fetchMoviesData = new FetchMoviesData(mLoadingIndicator,adapter, this);
+            FetchMoviesData fetchMoviesData = new FetchMoviesData(mLoadingIndicator, adapter, this);
             fetchMoviesData.execute(BASE_URL_POPULAR);
 
         }
 
         if (id == R.id.show_the_most_rated) {
-            FetchMoviesData fetchMoviesData = new FetchMoviesData(mLoadingIndicator,adapter, this);
+            FetchMoviesData fetchMoviesData = new FetchMoviesData(mLoadingIndicator, adapter, this);
             fetchMoviesData.execute(BASE_URL_RATED);
         }
 
@@ -185,6 +177,7 @@ public class MainActivity extends AppCompatActivity implements MoviesAdapter.Mov
     public Loader<Cursor> onCreateLoader(int id, final Bundle args) {
         return new AsyncTaskLoader<Cursor>(this) {
             Cursor mCursorData = null;
+
             @Override
             protected void onStartLoading() {
                 if (mCursorData != null) {
@@ -215,7 +208,6 @@ public class MainActivity extends AppCompatActivity implements MoviesAdapter.Mov
             public void deliverResult(Cursor data) {
                 super.deliverResult(data);
             }
-
         };
     }
     @Override
