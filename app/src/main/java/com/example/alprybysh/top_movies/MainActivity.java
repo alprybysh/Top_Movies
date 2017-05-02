@@ -14,6 +14,7 @@ import android.support.v7.widget.RecyclerView;
 import android.util.DisplayMetrics;
 
 
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -43,6 +44,8 @@ public class MainActivity extends AppCompatActivity implements MoviesAdapter.Mov
     private RecyclerView mRecyclerView;
     private ProgressBar mLoadingIndicator;
     private Movie mMovie;
+
+    private int pageID = 1;
 
 
     private int numberOfColumns() {
@@ -136,23 +139,32 @@ public class MainActivity extends AppCompatActivity implements MoviesAdapter.Mov
             FetchMoviesData fetchMoviesData = new FetchMoviesData(mLoadingIndicator, adapter, this);
             fetchMoviesData.execute(BASE_URL_POPULAR);
 
+            pageID =1;
+
         }
 
         if (id == R.id.show_the_most_rated) {
             FetchMoviesData fetchMoviesData = new FetchMoviesData(mLoadingIndicator, adapter, this);
             fetchMoviesData.execute(BASE_URL_RATED);
+            pageID = 2;
+
         }
 
         if (id == R.id.show_my_favorites) {
             getSupportLoaderManager().restartLoader(MOVIE_LOADER_ID, null, this);
+            pageID =3;
         }
 
         return super.onOptionsItemSelected(item);
     }
 
     @Override
-    protected void onPostResume() {
-        super.onPostResume();
+    protected void onResume() {
+        super.onResume();
+        if (pageID == 3){
+            getSupportLoaderManager().restartLoader(MOVIE_LOADER_ID, null, this);
+        }
+
     }
 
     @Override
@@ -166,12 +178,6 @@ public class MainActivity extends AppCompatActivity implements MoviesAdapter.Mov
 
 
     }
-
-//    @Override
-//    protected void onRestoreInstanceState(Bundle savedInstanceState) {
-//       // movieArrayList = savedInstanceState.getParcelableArrayList("Key");
-//       // adapter.setMoviesData(movieArrayList);
-//    }
 
     @Override
     public Loader<Cursor> onCreateLoader(int id, final Bundle args) {

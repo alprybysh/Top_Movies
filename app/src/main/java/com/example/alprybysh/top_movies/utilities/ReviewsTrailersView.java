@@ -3,10 +3,11 @@ package com.example.alprybysh.top_movies.utilities;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Typeface;
 import android.os.AsyncTask;
 import android.support.v4.content.ContextCompat;
 import android.view.View;
-import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -152,6 +153,7 @@ public class ReviewsTrailersView extends AsyncTask<Integer, Void, Movie> {
                     Math.round(mContext.getResources().getDimension(R.dimen.padding_medium)),
                     Math.round(mContext.getResources().getDimension(R.dimen.padding_small)));
             author.setTextSize(mContext.getResources().getDimension(R.dimen.text_size_review));
+            author.setTypeface(null, Typeface.BOLD);
             author.setTextColor(ContextCompat.getColor(mContext, R.color.colorOfText));
             author.setText(list_author.get(i));
             ll.addView(author);
@@ -166,55 +168,84 @@ public class ReviewsTrailersView extends AsyncTask<Integer, Void, Movie> {
         list_name_video = mMovies.getmNameTrailers();
 
         LinearLayout ll = (LinearLayout) ((Activity) mContext).findViewById(R.id.trailers_layout_child);
-        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams
-                .WRAP_CONTENT, LinearLayout.LayoutParams.MATCH_PARENT, 1.0f);
-        for (int i = 0; i < list_video.size(); i++) {
-            LinearLayout linearLayout = new LinearLayout(mContext);
 
-            linearLayout.setLayoutParams(params);
+        LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams
+                .MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT, 7f);
+
+        LinearLayout.LayoutParams paramsView = new LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.WRAP_CONTENT, 6f);
+
+        int size = (Math.round(mContext.getResources().getDimension(R.dimen.play_image)));
+        LinearLayout.LayoutParams parms_play = new LinearLayout.LayoutParams(size,size, 1f);
+
+
+        TextView trailers = new TextView(mContext);
+        trailers.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT));
+        trailers.setText("Trailers:");
+        trailers.setTextSize(mContext.getResources().getDimension(R.dimen.text_size_review));
+        trailers.setPadding((int)mContext.getResources().getDimension(R.dimen.padding_medium),0,0,0);
+        trailers.setTextColor(ContextCompat.getColor(mContext, R.color.colorOfText));
+        View view1 = new View(mContext);
+        view1.setBackgroundColor(ContextCompat.getColor(mContext,
+                R.color.colorOfText));
+        view1.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.
+                LayoutParams.MATCH_PARENT, 4));
+        ll.addView(view1);
+        ll.addView(trailers);
+
+
+
+        for (int i = 0; i < list_video.size(); i++) {
+            final String key = list_video.get(i);
+
+
+            LinearLayout linearLayout = new LinearLayout(mContext);
+            linearLayout.setLayoutParams(layoutParams);
             linearLayout.setOrientation(LinearLayout.HORIZONTAL);
 
-            View view = new View(mContext);
-            final Button video = new Button(mContext);
-            TextView name_video = new TextView(mContext);
 
-            video.setLayoutParams(params);
-            video.setPadding(Math.round(mContext.getResources().getDimension(R.dimen.padding_medium)),
-                    Math.round(mContext.getResources().getDimension(R.dimen.padding_small)),
+            final TextView name_video = new TextView(mContext);
+            name_video.setLayoutParams(paramsView);
+            name_video.setPadding(Math.round(mContext.getResources().getDimension(R.dimen.padding_small)),
                     Math.round(mContext.getResources().getDimension(R.dimen.padding_medium)),
-                    Math.round(mContext.getResources().getDimension(R.dimen.padding_large)));
-            video.setTextSize(mContext.getResources().getDimension(R.dimen.text_size_review));
-            video.setTextColor(ContextCompat.getColor(mContext, R.color.colorOfText));
-            video.setText(list_video.get(i));
-            video.setOnClickListener(new View.OnClickListener() {
+                    Math.round(mContext.getResources().getDimension(R.dimen.padding_medium)),
+                    Math.round(mContext.getResources().getDimension(R.dimen.padding_medium)));
+            name_video.setTextSize(mContext.getResources().getDimension(R.dimen.text_size_review));
+            name_video.setTextColor(ContextCompat.getColor(mContext, R.color.colorOfText));
+            name_video.setText(list_name_video.get(i));
+            name_video.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
 
                     Intent intent = new Intent(Intent.ACTION_VIEW);
-                    intent.setData(NetworkUtils.buildTrailerUri(video.getText().toString()));
+                    intent.setData(NetworkUtils.buildTrailerUri(key));
                     mContext.startActivity(intent);
-                    Toast.makeText(mContext, video.getText().toString(), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(mContext, name_video.getText().toString(), Toast.LENGTH_SHORT).show();
 
                 }
             });
 
-            name_video.setLayoutParams(params);
-            name_video.setPadding(Math.round(mContext.getResources().getDimension(R.dimen.padding_medium)),
-                    Math.round(mContext.getResources().getDimension(R.dimen.padding_large)),
-                    Math.round(mContext.getResources().getDimension(R.dimen.padding_medium)),
-                    Math.round(mContext.getResources().getDimension(R.dimen.padding_small)));
-            name_video.setTextSize(mContext.getResources().getDimension(R.dimen.text_size_review));
-            name_video.setTextColor(ContextCompat.getColor(mContext, R.color.colorOfText));
-            name_video.setText(list_name_video.get(i));
 
+
+            View view = new View(mContext);
             view.setBackgroundColor(ContextCompat.getColor(mContext,
                     R.color.colorOfText));
             view.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.
                     LayoutParams.MATCH_PARENT, 4));
+
+
+            ImageView image =  new ImageView(mContext);
+            image.setImageResource(R.drawable.play_button);
+            image.setLayoutParams(parms_play);
+            parms_play.setMargins(0,Math.round(mContext.getResources().getDimension(R.dimen.padding_medium)),0,0);
+            image.setLayoutParams(parms_play);
+
+
+            linearLayout.addView(image);
             linearLayout.addView(name_video);
-            linearLayout.addView(video);
-            ll.addView(view);
+
             ll.addView(linearLayout);
+            ll.addView(view);
 
         }
 

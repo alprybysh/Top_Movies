@@ -4,14 +4,13 @@ package com.example.alprybysh.top_movies;
 import android.content.Intent;
 
 import android.database.Cursor;
-import android.graphics.PorterDuff;
-import android.support.v4.app.LoaderManager;
+
 import android.support.v4.content.ContextCompat;
-import android.support.v4.content.Loader;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
 
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -39,6 +38,8 @@ public class DetailActivity extends AppCompatActivity
     private int mMovieID;
     private boolean mMovieExist;
     private Cursor cursor;
+
+
 
 
     public static final int LOADER_ID_REVIEWS = 103;
@@ -123,6 +124,9 @@ public class DetailActivity extends AppCompatActivity
 
             if (delRow > 0){
                 favorite.setBackgroundColor(ContextCompat.getColor(this, R.color.colorDefaultFavorite));
+                Toast.makeText(getBaseContext(), "You've deleted this movie from the favorite list",
+                        Toast.LENGTH_SHORT).show();
+                mMovieExist = false;
             }
 
 
@@ -130,7 +134,9 @@ public class DetailActivity extends AppCompatActivity
             setMoviesDatabase = new SetMoviesDatabase(this);
             favorite.setBackgroundColor(ContextCompat.getColor(this, R.color.colorSavedFavorite));
             setMoviesDatabase.setMoviesData(mMovie);
-            Toast.makeText(getBaseContext(), "CLICK", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getBaseContext(), "You've added this movie to the favorite list",
+                    Toast.LENGTH_SHORT).show();
+            mMovieExist = true;
 
         }
 
@@ -152,6 +158,5 @@ public class DetailActivity extends AppCompatActivity
         cursor.close();
         return false;
     }
-
 
 }

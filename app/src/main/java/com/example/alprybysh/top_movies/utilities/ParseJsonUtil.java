@@ -134,7 +134,7 @@ public class ParseJsonUtil {
         rating = new ArrayList<>();
         try {
             for (int i = 0; i < array.length(); i++) {
-                rating.add(i, array.getJSONObject(i).getString("vote_average"));
+                rating.add(i, array.getJSONObject(i).getString("vote_average")+"/10");
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -149,7 +149,8 @@ public class ParseJsonUtil {
         releaseDate = new ArrayList<>();
         try {
             for (int i = 0; i < array.length(); i++) {
-                releaseDate.add(i, array.getJSONObject(i).getString("release_date"));
+
+                releaseDate.add(i, array.getJSONObject(i).getString("release_date").substring(0,4));
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -264,8 +265,6 @@ public class ParseJsonUtil {
             mMoviesArray.add(mMovies);
 
         }
-//        setMoviesDatabase = new SetMoviesDatabase(context);
-//        setMoviesDatabase.setMoviesData(mMoviesArray);
         return mMoviesArray;
     }
 }

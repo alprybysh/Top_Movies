@@ -8,5 +8,8 @@
     <dimen name="text_size_medium">16dp</dimen>
     <dimen name="text_size_review">5dp</dimen>
     <dimen name="text_size_large">24dp</dimen>
+    <dimen name="text_size_super_large">32dp</dimen>
     <dimen name="line_size_small">2dp</dimen>
+    <dimen name="play_image">24dp</dimen>
+    <dimen name="padding_title">48dp</dimen>
 </resources>
