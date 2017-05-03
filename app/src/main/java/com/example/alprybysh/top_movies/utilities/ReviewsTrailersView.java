@@ -12,6 +12,7 @@ import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
+
 import com.example.alprybysh.top_movies.Movie;
 import com.example.alprybysh.top_movies.R;
 
@@ -45,12 +46,13 @@ public class ReviewsTrailersView extends AsyncTask<Integer, Void, Movie> {
     private static final String BASE_URL = "https://api.themoviedb.org/3/movie/";
     private static final String REVIEWURL = "/reviews";
     private static final String TRAILERSURL = "/videos";
+    private String mTrailers = "Trailers:";
 
 
     public ReviewsTrailersView(Context context, int movieID) {
         mContext = context;
         mMovieID = movieID;
-        mLoadingIndicator = (ProgressBar) ((Activity)mContext).findViewById(R.id.pb_loading_indicator_detail);
+        mLoadingIndicator = (ProgressBar) ((Activity) mContext).findViewById(R.id.pb_loading_indicator_detail);
     }
 
 
@@ -121,20 +123,17 @@ public class ReviewsTrailersView extends AsyncTask<Integer, Void, Movie> {
         }
     }
 
+    // This method is used to creteas programatically reviews_layout and set up data
     public void setReviews() {
 
 
         list_review = mMovies.getmReviews();
         list_author = mMovies.getmAuthor();
 
-        //      View v = getLayoutInflater().inflate(R.layout.details_of_movie, null);
-
-
         LinearLayout ll = (LinearLayout) ((Activity) mContext).findViewById(R.id.review_layout_child);
 
         LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams
                 .WRAP_CONTENT, LinearLayout.LayoutParams.MATCH_PARENT);
-
 
         for (int i = 0; i < list_review.size(); i++) {
             TextView review = new TextView(mContext);
@@ -163,6 +162,7 @@ public class ReviewsTrailersView extends AsyncTask<Integer, Void, Movie> {
 
     }
 
+    // This method is used to creteas programatically trailers_layout and set up data
     public void setTrailers() {
         list_video = mMovies.getmTrailers();
         list_name_video = mMovies.getmNameTrailers();
@@ -172,18 +172,22 @@ public class ReviewsTrailersView extends AsyncTask<Integer, Void, Movie> {
         LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams
                 .MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT, 7f);
 
-        LinearLayout.LayoutParams paramsView = new LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.WRAP_CONTENT, 6f);
+        LinearLayout.LayoutParams paramsView = new LinearLayout.LayoutParams((int) mContext.getResources().getDimension(R.dimen.padding_null),
+                LinearLayout.LayoutParams.WRAP_CONTENT, 6f);
 
         int size = (Math.round(mContext.getResources().getDimension(R.dimen.play_image)));
-        LinearLayout.LayoutParams parms_play = new LinearLayout.LayoutParams(size,size, 1f);
+        LinearLayout.LayoutParams parms_play = new LinearLayout.LayoutParams(size, size, 1f);
 
 
         TextView trailers = new TextView(mContext);
         trailers.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT,
                 LinearLayout.LayoutParams.WRAP_CONTENT));
-        trailers.setText("Trailers:");
+        trailers.setText(mTrailers);
         trailers.setTextSize(mContext.getResources().getDimension(R.dimen.text_size_review));
-        trailers.setPadding((int)mContext.getResources().getDimension(R.dimen.padding_medium),0,0,0);
+        trailers.setPadding((int) mContext.getResources().getDimension(R.dimen.padding_medium),
+                (int) mContext.getResources().getDimension(R.dimen.padding_null),
+                (int) mContext.getResources().getDimension(R.dimen.padding_null),
+                (int) mContext.getResources().getDimension(R.dimen.padding_null));
         trailers.setTextColor(ContextCompat.getColor(mContext, R.color.colorOfText));
         View view1 = new View(mContext);
         view1.setBackgroundColor(ContextCompat.getColor(mContext,
@@ -192,8 +196,6 @@ public class ReviewsTrailersView extends AsyncTask<Integer, Void, Movie> {
                 LayoutParams.MATCH_PARENT, 4));
         ll.addView(view1);
         ll.addView(trailers);
-
-
 
         for (int i = 0; i < list_video.size(); i++) {
             final String key = list_video.get(i);
@@ -225,8 +227,6 @@ public class ReviewsTrailersView extends AsyncTask<Integer, Void, Movie> {
                 }
             });
 
-
-
             View view = new View(mContext);
             view.setBackgroundColor(ContextCompat.getColor(mContext,
                     R.color.colorOfText));
@@ -234,10 +234,13 @@ public class ReviewsTrailersView extends AsyncTask<Integer, Void, Movie> {
                     LayoutParams.MATCH_PARENT, 4));
 
 
-            ImageView image =  new ImageView(mContext);
+            ImageView image = new ImageView(mContext);
             image.setImageResource(R.drawable.play_button);
             image.setLayoutParams(parms_play);
-            parms_play.setMargins(0,Math.round(mContext.getResources().getDimension(R.dimen.padding_medium)),0,0);
+            parms_play.setMargins((int) mContext.getResources().getDimension(R.dimen.padding_null),
+                    Math.round(mContext.getResources().getDimension(R.dimen.padding_medium)),
+                    (int) mContext.getResources().getDimension(R.dimen.padding_null),
+                    (int) mContext.getResources().getDimension(R.dimen.padding_null));
             image.setLayoutParams(parms_play);
 
 

@@ -14,7 +14,6 @@ import android.support.v7.widget.RecyclerView;
 import android.util.DisplayMetrics;
 
 
-
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -44,6 +43,7 @@ public class MainActivity extends AppCompatActivity implements MoviesAdapter.Mov
     private ProgressBar mLoadingIndicator;
     private Movie mMovie;
 
+    // This variable is used to keep which page was opened last
     private int pageID = 1;
 
 
@@ -138,7 +138,7 @@ public class MainActivity extends AppCompatActivity implements MoviesAdapter.Mov
             FetchMoviesData fetchMoviesData = new FetchMoviesData(mLoadingIndicator, adapter, this);
             fetchMoviesData.execute(BASE_URL_POPULAR);
 
-            pageID =1;
+            pageID = 1;
 
         }
 
@@ -151,7 +151,7 @@ public class MainActivity extends AppCompatActivity implements MoviesAdapter.Mov
 
         if (id == R.id.show_my_favorites) {
             getSupportLoaderManager().restartLoader(MOVIE_LOADER_ID, null, this);
-            pageID =3;
+            pageID = 3;
         }
 
         return super.onOptionsItemSelected(item);
@@ -160,7 +160,7 @@ public class MainActivity extends AppCompatActivity implements MoviesAdapter.Mov
     @Override
     protected void onResume() {
         super.onResume();
-        if (pageID == 3){
+        if (pageID == 3) {
             getSupportLoaderManager().restartLoader(MOVIE_LOADER_ID, null, this);
         }
 
@@ -193,6 +193,7 @@ public class MainActivity extends AppCompatActivity implements MoviesAdapter.Mov
                     forceLoad();
                 }
             }
+
             @Override
             public Cursor loadInBackground() {
                 try {
@@ -215,6 +216,7 @@ public class MainActivity extends AppCompatActivity implements MoviesAdapter.Mov
             }
         };
     }
+
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
         mLoadingIndicator.setVisibility(View.INVISIBLE);

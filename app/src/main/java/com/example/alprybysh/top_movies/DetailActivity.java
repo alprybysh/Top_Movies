@@ -2,15 +2,10 @@ package com.example.alprybysh.top_movies;
 
 
 import android.content.Intent;
-
 import android.database.Cursor;
-
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-
-
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -21,7 +16,6 @@ import android.widget.Toast;
 
 import com.example.alprybysh.top_movies.data.MoviesContract;
 import com.example.alprybysh.top_movies.data.SetMoviesDatabase;
-
 import com.example.alprybysh.top_movies.utilities.ReviewsTrailersView;
 import com.squareup.picasso.Picasso;
 
@@ -34,12 +28,9 @@ public class DetailActivity extends AppCompatActivity
 {
 
 
-
     private int mMovieID;
     private boolean mMovieExist;
     private Cursor cursor;
-
-
 
 
     public static final int LOADER_ID_REVIEWS = 103;
@@ -83,7 +74,6 @@ public class DetailActivity extends AppCompatActivity
             //if (intentStarted.hasExtra(Intent.EXTRA_TEXT)) {
             if (myParcelableObject != null) {
 
-                // mTitle = intentStarted.getStringExtra(Intent.EXTRA_TEXT);
                 mMovie = new Movie();
                 mMovie = myParcelableObject;
                 mTitleView.setText(mMovie.getmTitle());
@@ -96,12 +86,15 @@ public class DetailActivity extends AppCompatActivity
                 mRatingView.setText(mMovie.getmRating());
                 mReleaseDateView.setText(mMovie.getmReleaseDate());
                 mMovieID = mMovie.getmID();
+
                 mMovieExist = checkIfMovieExist();
+
+                // Set up background color of "MAke as favorite" button
                 if (mMovieExist) {
                     favorite.setBackgroundColor(ContextCompat.getColor(this, R.color.colorSavedFavorite));
                 } else
                     favorite.setBackgroundColor(ContextCompat.getColor(this, R.color.colorDefaultFavorite));
-
+                //If a movie object doesn't have reviews, to call new async task to fetch data.
                 if (mMovie.getmReviews() == null || mMovie.getmNameTrailers() == null) {
 
                     ReviewsTrailersView reviewsTrailersView = new ReviewsTrailersView(this, mMovieID);
@@ -114,33 +107,34 @@ public class DetailActivity extends AppCompatActivity
         }
     }
 
+    //This method  removes or adds the movie in the database
     public void onClickAddFavorite(View view) {
 
-
-        if (mMovieExist){
+        if (mMovieExist) {
             int delRow = getContentResolver().delete(MoviesContract.MoviesEntry.CONTENT_URI,
                     "identifier = " + Integer.toString(mMovieID),
                     null);
 
-            if (delRow > 0){
+            if (delRow > 0) {
                 favorite.setBackgroundColor(ContextCompat.getColor(this, R.color.colorDefaultFavorite));
-                Toast.makeText(getBaseContext(), "You've deleted this movie from the favorite list",
+                Toast.makeText(getBaseContext(), R.string.movie_deleted,
                         Toast.LENGTH_SHORT).show();
                 mMovieExist = false;
             }
 
 
-        }else {
+        } else {
             setMoviesDatabase = new SetMoviesDatabase(this);
             favorite.setBackgroundColor(ContextCompat.getColor(this, R.color.colorSavedFavorite));
             setMoviesDatabase.setMoviesData(mMovie);
-            Toast.makeText(getBaseContext(), "You've added this movie to the favorite list",
+            Toast.makeText(getBaseContext(), R.string.movie_added,
                     Toast.LENGTH_SHORT).show();
             mMovieExist = true;
 
         }
     }
 
+    //This method checks if movie exists in the database of favorites movies
     public boolean checkIfMovieExist() {
 
         cursor = getContentResolver().query(MoviesContract.MoviesEntry.CONTENT_URI, null,

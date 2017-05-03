@@ -134,7 +134,7 @@ public class ParseJsonUtil {
         rating = new ArrayList<>();
         try {
             for (int i = 0; i < array.length(); i++) {
-                rating.add(i, array.getJSONObject(i).getString("vote_average")+"/10");
+                rating.add(i, array.getJSONObject(i).getString("vote_average") + "/10");
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -150,7 +150,7 @@ public class ParseJsonUtil {
         try {
             for (int i = 0; i < array.length(); i++) {
 
-                releaseDate.add(i, array.getJSONObject(i).getString("release_date").substring(0,4));
+                releaseDate.add(i, array.getJSONObject(i).getString("release_date").substring(0, 4));
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -159,6 +159,7 @@ public class ParseJsonUtil {
         return releaseDate;
     }
 
+    /*This method is used for getting an array list of  authors of reviews*/
     public ArrayList<String> getAuthor() {
 
         author = new ArrayList<>();
@@ -174,12 +175,13 @@ public class ParseJsonUtil {
     }
 
 
+    /*This method is used for getting an array list  of reviews*/
     public ArrayList<String> getReviews() {
 
         reviews = new ArrayList<>();
         try {
             for (int i = 0; i < array.length(); i++) {
-                 reviews.add(i, array.getJSONObject(i).getString("content"));
+                reviews.add(i, array.getJSONObject(i).getString("content"));
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -189,6 +191,7 @@ public class ParseJsonUtil {
     }
 
 
+    /*This method is used for getting an array list  of trailers path */
     public ArrayList<String> getTrailers() {
 
         trailers = new ArrayList<>();
@@ -203,6 +206,8 @@ public class ParseJsonUtil {
         return trailers;
     }
 
+
+    /*This method is used for getting an array list of names of trailers*/
     public ArrayList<String> getNameTrailers() {
 
         nameTrailers = new ArrayList<>();

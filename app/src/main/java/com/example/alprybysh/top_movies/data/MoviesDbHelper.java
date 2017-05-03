@@ -26,6 +26,7 @@ public class MoviesDbHelper extends SQLiteOpenHelper {
 
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
     }
+
     // @param db The database.
     @Override
     public void onCreate(SQLiteDatabase db) {
@@ -34,7 +35,7 @@ public class MoviesDbHelper extends SQLiteOpenHelper {
         final String SQL_CREATE_MOVIE_TABLE = "CREATE TABLE " + MoviesContract.MoviesEntry.TABLE_NAME + " (" +
                 MoviesContract.MoviesEntry._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
                 MoviesContract.MoviesEntry.COLUMN_TITLE + " TEXT NOT NULL, " +
-                MoviesContract.MoviesEntry.COLUMN_IDENTIFIER + " INTEGER NOT NUll, "+
+                MoviesContract.MoviesEntry.COLUMN_IDENTIFIER + " INTEGER NOT NUll, " +
                 MoviesContract.MoviesEntry.COLUMN_POSTER + " TEXT NOT NULL, " +
                 MoviesContract.MoviesEntry.COLUMN_OVERVIEW + " TEXT NOT NULL, " +
                 MoviesContract.MoviesEntry.COLUMN_TRAILER + " TEXT, " +

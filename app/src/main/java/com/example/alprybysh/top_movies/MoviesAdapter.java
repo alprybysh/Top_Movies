@@ -2,26 +2,17 @@ package com.example.alprybysh.top_movies;
 
 import android.content.Context;
 import android.database.Cursor;
-import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.example.alprybysh.top_movies.data.MoviesContract;
-import com.example.alprybysh.top_movies.data.SetMoviesDatabase;
-import com.example.alprybysh.top_movies.utilities.ParseJsonUtil;
 import com.squareup.picasso.Picasso;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.net.URL;
 import java.util.ArrayList;
 
 /**

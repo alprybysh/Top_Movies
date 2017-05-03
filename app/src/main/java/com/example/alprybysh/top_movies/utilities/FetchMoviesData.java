@@ -30,7 +30,6 @@ public class FetchMoviesData extends AsyncTask<String, Void, ArrayList<Movie>> {
     private String mUrl;
     Context mContext;
 
-     Movie movie;
 
 
     public FetchMoviesData(ProgressBar progressBar, MoviesAdapter mAdapter, Context context) {
@@ -38,10 +37,6 @@ public class FetchMoviesData extends AsyncTask<String, Void, ArrayList<Movie>> {
         adapter = mAdapter;
         mLoadingIndicator = progressBar;
         mContext = context;
-
-        Log.v("Size", "I'm here");
-
-
 
     }
     @Override

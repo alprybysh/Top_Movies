@@ -2,4 +2,10 @@
     <string name="app_name">Top Movies</string>
 
     <string name="error_message">Error</string>
+
+    <string name="movie_deleted">This movie was deleted from the favorite list</string>
+    <string name="movie_added">This movie was added to the favorite list</string>
+
+
+
 </resources>

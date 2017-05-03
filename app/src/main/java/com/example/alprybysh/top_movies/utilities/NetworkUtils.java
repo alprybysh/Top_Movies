@@ -4,6 +4,7 @@ import android.net.Uri;
 import android.os.Build;
 import android.support.compat.BuildConfig;
 import android.util.Log;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
@@ -20,17 +21,17 @@ public class NetworkUtils {
 
     /**
      * Builds the URL used to talk to the  server
+     *
      * @param url_popular The endpoint that will be queried for.
      * @return The URL to use to query the server.
      */
-
 
 
     private static final String KEY = com.example.alprybysh.top_movies.BuildConfig.API_KEY;
 
     private static final String BASE_URL = "https://www.youtube.com/watch?v=";
 
-
+    //This method is used to build URL to fetch reviws URL
     public static String buildUrlReviews(String mBaseUrl, String end, int mMovieId) {
 
         StringBuilder builder = new StringBuilder();
@@ -40,8 +41,8 @@ public class NetworkUtils {
         return builder.toString();
     }
 
-
-    public static Uri buildTrailerUri(String path){
+    //This method is used to build URL to fetch trailers URL
+    public static Uri buildTrailerUri(String path) {
 
         Uri builtUri = Uri.parse(BASE_URL + path)
                 .buildUpon()
@@ -51,6 +52,7 @@ public class NetworkUtils {
         return builtUri;
     }
 
+    //This method is used to build URL to fetch movies data URL
     public static URL buildUrl(String url_popular) {
         Uri builtUri = Uri.parse(url_popular + KEY)
                 .buildUpon()
@@ -72,7 +74,6 @@ public class NetworkUtils {
      * Builds the URL used to talk to the server
      *
      * @param url The url
-
      * @return The Url to use to query the server.
      */
 
