@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:fillViewport="true"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/title_details"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingTop="@dimen/padding_large"
+            android:paddingLeft="@dimen/padding_large"
+            android:paddingBottom="@dimen/padding_large"
+            android:textColor="@color/colorWhite"
+            android:textSize="@dimen/text_size_super_large"
+
+            android:layout_gravity="center_horizontal"
+            android:background="@color/colorDefaultFavorite"
+            tools:text="Title"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+            <ImageView
+                android:id="@+id/details_poster"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/padding_medium"
+               />
+
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/release_date"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/padding_small"
+                    android:padding="@dimen/padding_small"
+                    android:textSize="@dimen/text_size_medium"
+                    android:textColor="@color/colorOfText"
+                    tools:text="Release date"
+
+                    />
+
+                <TextView
+                    android:id="@+id/users_rating"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="@dimen/padding_small"
+                    android:textSize="@dimen/text_size_medium"
+                    android:textColor="@color/colorOfText"
+                    tools:text="Rating"
+                    />
+
+                <Button
+                    android:id="@+id/edit_favorite"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Make as favorite"
+                    android:onClick="onClickAddFavorite"
+                    android:padding="@dimen/padding_small"
+                    android:layout_marginTop="@dimen/padding_small"
+
+                    />
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+
+
+        <TextView
+            android:id="@+id/overview"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/padding_medium"
+            android:textSize="@dimen/text_size_medium"
+            android:textColor="@color/colorOfText"
+
+            />
+
+        <LinearLayout
+            android:id="@+id/trailers_layout_child"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:id="@+id/review_layout_child"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+        </LinearLayout>
+
+        <ProgressBar
+            android:id="@+id/pb_loading_indicator_detail"
+            android:layout_width="42dp"
+            android:layout_height="42dp"
+            android:layout_gravity="center"
+            android:visibility="invisible" />
+
+
+    </LinearLayout>
+
+</ScrollView>

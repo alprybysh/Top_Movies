@@ -14,7 +14,7 @@ import android.support.v7.widget.RecyclerView;
 import android.util.DisplayMetrics;
 
 
-import android.util.Log;
+
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -24,7 +24,6 @@ import android.widget.ProgressBar;
 
 import com.example.alprybysh.top_movies.data.MoviesContract;
 import com.example.alprybysh.top_movies.utilities.FetchMoviesData;
-import com.example.alprybysh.top_movies.utilities.ParseJsonUtil;
 
 import java.util.ArrayList;
 

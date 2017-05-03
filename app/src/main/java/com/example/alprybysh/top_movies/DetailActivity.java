@@ -139,9 +139,6 @@ public class DetailActivity extends AppCompatActivity
             mMovieExist = true;
 
         }
-
-
-
     }
 
     public boolean checkIfMovieExist() {
